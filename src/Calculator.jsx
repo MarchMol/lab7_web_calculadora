@@ -2,29 +2,35 @@ import React from "react";
 import Button from "./components/button/Button.jsx";
 import Display from './components/display/Display.jsx'
 import './Calculator.css'
-import useButton from "./hooks/useButton.jsx";
+import useCalc from "./hooks/useCalc.jsx";
 
-const button_list = [
-    '7',
-    '8',
-    '9',
-    '+',
-    '4',
-    '5',
-    '6',
-    '-',
-    '1',
-    '2',
-    '3',
-    '*',
-    '+/-',
-    '0',
-    '.',
-    '='
-]
+const button_obj = {
+    1:['CE',1],
+    2:['CA',1],
+    3:['⌫',1],
+    4:['/',0],
+    5:['7',0],
+    6:['8',0],
+    7:['9',0],
+    8:['+',0],
+    9:['4',0],
+    10:['5',0],
+    11:['6',0],
+    12:['-',0],
+    13:['1',0],
+    14:['2',0],
+    15:['3',0],
+    16:['*',0],
+    17:['+/-',0],
+    18:['0',0],
+    19:['.',0],
+    20:['=',3]
+};
+
+
 
 const Calculator = () => {
-    const {setSelected} = useButton();
+    const {setSelected} = useCalc();
 
     const handleClick = (value) => {
         console.log(value)
@@ -33,10 +39,14 @@ const Calculator = () => {
 
     return (
         <div className='calculator'>
-            <Display text='HOLAAA' />
+            <div className="calcTop">
+                <Display text='HOLAAA' />
+            </div>
+            
             <div className='numberGrid'>
-                {button_list.map((value, index) => (
-                    <Button key={index} text={value} onClick={() => handleClick(value)} />
+            
+                {Object.entries(button_obj).map(([item, index])=> (
+                    <Button key={item} type={index[1]} text={index[0]} onClick={() => handleClick(index[0])} />
                 ))}
             </div>
         </div>

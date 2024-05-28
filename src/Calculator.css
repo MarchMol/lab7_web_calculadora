@@ -8,4 +8,13 @@
     background-color:#191919;
     padding: 1rem;
     border-radius: 2vh;
+    box-shadow: 0 0 5vh 0 rgba(0, 0, 0, 0.671);
+}
+
+.calcTop{
+background-color: rgb(36, 39, 43);
+height: 10vh;
+padding: 0.5vh;
+border-radius: 1vh;
+margin-bottom: 2vh;
 }
