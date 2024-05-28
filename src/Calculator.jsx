@@ -5,8 +5,8 @@ import './Calculator.css'
 import useCalc from "./hooks/useCalc.jsx";
 
 const button_obj = {
-    1:['CE',1],
-    2:['CA',1],
+    1:['CA',1],
+    2:['CE',1],
     3:['⌫',1],
     4:['/',0],
     5:['7',0],
