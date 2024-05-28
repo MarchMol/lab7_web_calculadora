@@ -21,15 +21,34 @@ const calculate = (a,operation, b ) => {
 }
 
 const errorCatcher = (rslt) =>{
-  if(rslt.toString().length>9){
-    return true
-  } else if(rslt<0){
+  if(Number.isInteger(rslt)){
+    if(rslt.toString().length>9){
+      return true
+    }
+  } else{
+    let [intP, decP] = rslt.toString().split('.')
+    if(intP.length+decP.length>9 && intP.length>7){
+      return true
+    }
+  }
+  if(rslt<0){
     return true
   } else{
     return false
   }
 }
-
+const formatDecimal = (rslt) =>{
+  let tem = ''
+  let [intP, decP] = rslt.toString().split('.')
+  if(intP.length+decP.length<=8){
+    tem = rslt
+  } else if(intP.length<=7){
+    tem = `${intP}.${decP.substring(0,8-intP.length)}`
+    console.log(intP, decP.substring(0,8-intP.length))
+  } 
+  console.log(intP, decP)
+  return tem.toString()
+}
 
 const CalcContext = createContext({ operation:'',selected: '', displayText: '',useButton: () => {}})
 
@@ -56,18 +75,31 @@ const CalcProvider = ({ children }) => {
       case '+/-':
         if(!['Error','','NaN'].includes(displayText)){
           var tem = parseFloat(displayText);
-          setDisplayText((-tem).toString())
+          if(!errorCatcher(parseFloat(`1${displayText}`))){
+            if((-tem).toString().length>9){
+              setDisplayText(formatDecimal(-tem))
+            } else{
+              setDisplayText((-tem).toString())
+            }
+          } else {
+            setDisplayText('Error')
+          }
+
         }
         break;
       case '=':
-        var rslt = calculate(
+        let rslt = calculate(
           operation.substring(0, operation.length - 1),
           operation.substring(operation.length - 1, operation.length),
           displayText
         )
         if(!errorCatcher(rslt)){
-          setDisplayText(rslt.toString())
-        } else{
+          if(rslt.toString().length>9){
+            setDisplayText(formatDecimal(rslt))
+          } else{
+            setDisplayText(rslt.toString())
+          }
+        } else {
           setDisplayText('Error')
         }
         setOperation('')
@@ -76,7 +108,26 @@ const CalcProvider = ({ children }) => {
       default:
         if(!['Error','NaN'].includes(displayText)){
           if(operators.includes(selected)){
-            setOperation(`${displayText}${selected}`)
+            if(displayText===''){
+              setOperation(`0${selected}`)
+            }else if(operation===''){
+              setOperation(`${displayText}${selected}`)
+            }else{
+              let rslt = calculate(
+                operation.substring(0, operation.length - 1),
+                operation.substring(operation.length - 1, operation.length),
+                displayText
+              )
+              if(!errorCatcher(rslt)){
+                if(rslt.toString().length>9){
+                  setOperation(`${formatDecimal(rslt)}${selected}`)
+                } else{
+                  setOperation(`${rslt.toString()}${selected}`)
+                }
+              } else {
+                setDisplayText('Error')
+              }
+            }
             setRewrite(true)
           } else if(rewrite || displayText.length<9){
             if(rewrite && selected!=''){
