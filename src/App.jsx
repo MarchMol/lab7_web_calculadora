@@ -1,14 +1,14 @@
 import React from 'react'
 import './App.css'
 import Calculator from './Calculator.jsx'
-import { ButtonProvider } from './hooks/useButton.jsx'
+import { CalcProvider } from './hooks/useCalc.jsx'
 
 
 function App() {  
   return (
-    <ButtonProvider>
+    <CalcProvider>
       <Calculator />
-    </ButtonProvider>
+    </CalcProvider>
   )
 }
 
