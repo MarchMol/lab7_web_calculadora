@@ -1,0 +1,11 @@
+.calculator .numberGrid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2vh;
+  }
+  
+.calculator{
+    background-color:#191919;
+    padding: 1rem;
+    border-radius: 2vh;
+}
