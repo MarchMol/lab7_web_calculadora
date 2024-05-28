@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from 'prop-types'
 import './Button.css'
-import useButton from "../../hooks/useButton"
+import useCalc from "../../hooks/useCalc"
 
-const Button = ({ text, onClick }) => {
-    const {selected} = useButton();
+const Button = ({ text, onClick, type }) => {
+    const [isHolding, setIsHolding] = useState(false)
+
+    const handleDown = () => {
+        setIsHolding(true)
+    }
+
+    const handleUp = () => {
+        setIsHolding(false)
+    }
 
     return (
-        <>
-            {selected===text ?
-                (<button onClick={onClick} id="selected">
-                    {text}
-                </button>)
-                :
-                (<button onClick={onClick}>
-                    {text}
-                </button>)
-
-            }
-        </>
-
+        <button 
+        onClick={onClick} 
+        onMouseDown={handleDown} 
+        onMouseUp={handleUp}
+        onMouseLeave={handleUp}
+        id={isHolding ? 'selected' : ''}
+        className={type>0 ? (type===1 ? 'option' : 'equal') : 'other'}
+        >
+            
+            {text}
+        </button>
     )
 }
 
 Button.propTypes = {
     text: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    type: PropTypes.number
 }
 
 export default Button

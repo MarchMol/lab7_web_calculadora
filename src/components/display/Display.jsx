@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from 'prop-types'
 import './Display.css'
+import useCalc from "../../hooks/useCalc";
 
-const Display = ({text}) => {
+const Display = () => {
+    const {displayText, operation} = useCalc()
     return(
-        <h2 className="display">{text}</h2>
+        <div className="displayGrid">
+        <p className="displayOperation">{operation}</p>
+        <h2 className="displayMain">{displayText}</h2>
+        </div>
+
     )
 }
 
