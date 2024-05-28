@@ -1,9 +1,35 @@
 import { useState, createContext, useContext, useEffect } from 'react'
 
 const operators = [
-'+','-','*','+/-','/'
+'+','-','*','/'
 ]
   
+const calculate = (a,operation, b ) => {
+
+  switch(operation){
+    case '+':
+      return (parseFloat(a)+parseFloat(b))
+    case '-':
+      return parseFloat(a)-parseFloat(b)
+    case '*':
+      return parseFloat(a)*parseFloat(b)
+    case '/':
+      return parseFloat(a)/parseFloat(b)
+    default:
+      return a
+  }
+}
+
+const errorCatcher = (rslt) =>{
+  if(rslt.toString().length>9){
+    return true
+  } else if(rslt<0){
+    return true
+  } else{
+    return false
+  }
+}
+
 
 const CalcContext = createContext({ operation:'',selected: '', displayText: '',useButton: () => {}})
 
@@ -11,6 +37,7 @@ const CalcProvider = ({ children }) => {
   const [selected, setSelected] = useState('')
   const [displayText, setDisplayText] = useState('')
   const [operation, setOperation] = useState('')
+  const [rewrite, setRewrite] = useState(false)
 
   useEffect(()=>{
     switch(selected){
@@ -22,13 +49,43 @@ const CalcProvider = ({ children }) => {
         setDisplayText('')
         break;
       case '⌫':
-        setDisplayText(displayText.substring(0, displayText.length - 1))
+        if(!['Error','','NaN'].includes(displayText)){
+          setDisplayText(displayText.substring(0, displayText.length - 1))
+        }
+        break;
+      case '+/-':
+        if(!['Error','','NaN'].includes(displayText)){
+          var tem = parseFloat(displayText);
+          setDisplayText((-tem).toString())
+        }
+        break;
+      case '=':
+        var rslt = calculate(
+          operation.substring(0, operation.length - 1),
+          operation.substring(operation.length - 1, operation.length),
+          displayText
+        )
+        if(!errorCatcher(rslt)){
+          setDisplayText(rslt.toString())
+        } else{
+          setDisplayText('Error')
+        }
+        setOperation('')
+        setRewrite(true)
         break;
       default:
-        if(operators.includes(selected)){
-          setOperation(`${displayText}${selected}`)
-        } else if(displayText.length<9){
-          setDisplayText(`${displayText}${selected}`)
+        if(!['Error','NaN'].includes(displayText)){
+          if(operators.includes(selected)){
+            setOperation(`${displayText}${selected}`)
+            setRewrite(true)
+          } else if(rewrite || displayText.length<9){
+            if(rewrite && selected!=''){
+              setDisplayText(selected)
+              setRewrite(false)
+            } else{
+              setDisplayText(`${displayText}${selected}`)
+            }
+          }
         }
     }
 
