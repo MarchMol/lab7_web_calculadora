@@ -11,5 +11,9 @@ export default defineConfig({
       '@calculator': '/src/components/calculator',
       '@hooks': '/src/hooks'
     }
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: './setupTests.js'
   }
 })
