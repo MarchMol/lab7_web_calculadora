@@ -4,7 +4,7 @@ const operators = [
 '+','-','*','/'
 ]
 
-const CalcContext = createContext({ operation:'',selected: '', displayText: '',useButton: () => {}})
+const CalcContext = createContext({ operation:'',selected: '', setSelected:()=>{}, displayText:''})
 
 const CalcProvider = ({ children }) => {
   const [selected, setSelected] = useState('')
@@ -67,6 +67,7 @@ const CalcProvider = ({ children }) => {
           if(operators.includes(selected)){
             if(displayText===''){
               setOperation(`0${selected}`)
+            
             }else if(operation===''){
               setOperation(`${displayText}${selected}`)
             }else{
@@ -113,5 +114,5 @@ const useCalc = () => {
 }
 
 export default useCalc
-export { CalcProvider }
+export { CalcProvider, CalcContext }
 
