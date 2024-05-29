@@ -20,21 +20,26 @@ const calculate = (a,operation, b ) => {
   }
 
   const errorCatcher = (rslt) =>{
-    if(Number.isInteger(rslt)){
-      if(rslt.toString().length>9){
-        return true
-      }
+    if(rslt!='Error'){
+        if(Number.isInteger(rslt)){
+            if(rslt.toString().length>9){
+              return true
+            }
+          } else{
+            let [intP, decP] = rslt.toString().split('.')
+            if(intP.length+decP.length>9 && intP.length>7){
+              return true
+            }
+          }
+          if(rslt<0){
+            return true
+          } else{
+            return false
+          }
     } else{
-      let [intP, decP] = rslt.toString().split('.')
-      if(intP.length+decP.length>9 && intP.length>7){
         return true
-      }
     }
-    if(rslt<0){
-      return true
-    } else{
-      return false
-    }
+
   }
 
   const formatDecimal = (rslt) =>{
