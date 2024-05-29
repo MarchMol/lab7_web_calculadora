@@ -1,18 +1,35 @@
-
-.displayGrid{
+.displayGrid {
     display: grid;
     grid-template-rows: 1fr 1fr;
     gap: 0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-.displayOperation{
+
+.displayOperation {
     padding: 0;
     margin: 0;
+    margin-left: 1vh;
     color: rgb(126, 126, 126);
+    font-size: 2.5vh;
 }
 
-.displayMain{
+.displayMain {
     padding: 0;
     margin: 0;
+    margin-left: 1vh;
     color: white;
+    font-size: 4vh;
+    max-width: 9.8vw;
+}
+
+.displayScreen {
+    background: linear-gradient(30deg, rgba(36, 39, 43, 1) 47%, rgba(50, 53, 57, 1) 48%, rgba(46, 51, 56, 1) 51%, rgba(36, 39, 43, 1) 100%);
+    min-height: 9vh;
+    min-width: 24vw;
+    padding: 0.5vh;
+    border-radius: 1vh;
+    margin-bottom: 5vh;
+    border: 0.1vh solid rgb(41, 45, 49);
+    border-bottom: 0.1vh solid rgb(52, 57, 61);
+    border-left: 0.1vh solid rgb(45, 49, 53);
 }

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import './Button.css'
-import useCalc from "../../hooks/useCalc"
 
 const Button = ({ text, onClick, type }) => {
     const [isHolding, setIsHolding] = useState(false)
@@ -23,7 +22,6 @@ const Button = ({ text, onClick, type }) => {
         id={isHolding ? 'selected' : ''}
         className={type>0 ? (type===1 ? 'option' : 'equal') : 'other'}
         >
-            
             {text}
         </button>
     )

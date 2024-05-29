@@ -12,6 +12,9 @@ button{
     font-size: 3vh;
     border: 0.1vh solid #1d1d1d;
     transition: background-color 0.05s;
+    overflow: hidden;
+    text-overflow:clip ;
+    text-wrap: nowrap;
 }
 
 button:hover{

@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "./components/button/Button.jsx";
-import Display from './components/display/Display.jsx'
+import Button from "@button/Button.jsx";
+import Display from '@display/Display.jsx'
 import './Calculator.css'
-import useCalc from "./hooks/useCalc.jsx";
+import useCalc from "@hooks/useCalc.jsx";
 
 const button_obj = {
     1:['CA',1],
@@ -27,8 +27,6 @@ const button_obj = {
     20:['=',3]
 };
 
-
-
 const Calculator = () => {
     const {setSelected} = useCalc();
 
@@ -39,10 +37,7 @@ const Calculator = () => {
 
     return (
         <div className='calculator'>
-            <div className="calcTop">
                 <Display text='HOLAAA' />
-            </div>
-            
             <div className='numberGrid'>
             
                 {Object.entries(button_obj).map(([item, index])=> (

@@ -88,22 +88,25 @@ const CalcProvider = ({ children }) => {
         }
         break;
       case '=':
-        let rslt = calculate(
-          operation.substring(0, operation.length - 1),
-          operation.substring(operation.length - 1, operation.length),
-          displayText
-        )
-        if(!errorCatcher(rslt)){
-          if(rslt.toString().length>9){
-            setDisplayText(formatDecimal(rslt))
-          } else{
-            setDisplayText(rslt.toString())
+        if(operation.length!=0){
+          let rslt = calculate(
+            operation.substring(0, operation.length - 1),
+            operation.substring(operation.length - 1, operation.length),
+            displayText
+          )
+          if(!errorCatcher(rslt)){
+            if(rslt.toString().length>9){
+              setDisplayText(formatDecimal(rslt))
+            } else{
+              setDisplayText(rslt.toString())
+            }
+          } else {
+            setDisplayText('Error')
           }
-        } else {
-          setDisplayText('Error')
+          setOperation('')
+          setRewrite(true)
         }
-        setOperation('')
-        setRewrite(true)
+
         break;
       default:
         if(!['Error','NaN'].includes(displayText)){
@@ -157,3 +160,4 @@ const useCalc = () => {
 
 export default useCalc
 export { CalcProvider }
+

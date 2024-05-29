@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   resolve:{
     alias:{
-      '@button': '/src/components/button'
+      '@button': '/src/components/button',
+      '@display': '/src/components/display',
+      '@calculator': '/src/components/calculator',
+      '@hooks': '/src/hooks'
     }
   }
 })

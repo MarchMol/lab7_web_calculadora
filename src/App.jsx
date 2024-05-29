@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
-import Calculator from './Calculator.jsx'
-import { CalcProvider } from './hooks/useCalc.jsx'
+import Calculator from '@calculator/Calculator.jsx'
+import { CalcProvider } from '@hooks/useCalc.jsx'
 
 
 function App() {  
