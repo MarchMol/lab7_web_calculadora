@@ -3,22 +3,26 @@ import React from 'react';
 import { CalcProvider, CalcContext } from './useCalc'; // Adjust the import path accordingly
 import { render, waitFor } from '@testing-library/react'
 
+const renderCalculator = (callback) => (
+    render(
+        <CalcProvider>
+            <CalcContext.Consumer>
+                {callback}
+            </CalcContext.Consumer>
+        </CalcProvider>
+    )
+);
 
 describe('useCalc tests:', () => {
+    
     it('Inicializa adecuadamente', async () => {
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText }) => (
-                        <div data-testid="test-component">
-                            <span data-testid="operation">{operation}</span>
-                            <span data-testid="selected">{selected}</span>
-                            <span data-testid="displayText">{displayText}</span>
-                        </div>
-                    )}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
+        const { getByTestId } = renderCalculator(({ operation, selected, displayText }) => (
+            <div data-testid="test-component">
+                <span data-testid="operation">{operation}</span>
+                <span data-testid="selected">{selected}</span>
+                <span data-testid="displayText">{displayText}</span>
+            </div>
+        ));
 
         const testComponent = getByTestId('test-component');
         expect(testComponent).toBeDefined();
@@ -26,41 +30,31 @@ describe('useCalc tests:', () => {
         expect(getByTestId('operation')).toHaveTextContent('');
         expect(getByTestId('selected')).toHaveTextContent('');
         expect(getByTestId('displayText')).toHaveTextContent('');
-
     });
 
     it('Seleccion: numero -> numero : concatena', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
-
-        simulateSelect('5')
+        simulateSelect('5');
         await waitFor(() => {
             expect(getByTestId('displayText')).toHaveTextContent('5');
             expect(getByTestId('operation')).toHaveTextContent('');
         });
-        simulateSelect('7')
+        simulateSelect('7');
         await waitFor(() => {
             expect(getByTestId('displayText')).toHaveTextContent('57');
             expect(getByTestId('operation')).toHaveTextContent('');
         });
-        simulateSelect('9')
+        simulateSelect('9');
         await waitFor(() => {
             expect(getByTestId('displayText')).toHaveTextContent('579');
             expect(getByTestId('operation')).toHaveTextContent('');
@@ -68,25 +62,16 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion: numero -> operacion -> operacion : opera', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
-
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
         simulateSelect('5')
         await waitFor(() => {
@@ -106,25 +91,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion: numero -> operacion -> answer: opera', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('5')
         await waitFor(() => {
@@ -144,25 +121,16 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion: numero -> operacion -> numero -> operacion: opera', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
-
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
         simulateSelect('4')
         await waitFor(() => {
@@ -187,25 +155,16 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion: operacion: opera sobre 0', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
-
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
         simulateSelect('-')
         await waitFor(() => {
@@ -220,25 +179,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion CE/CA borra display', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('4')
         await waitFor(() => {
@@ -269,24 +220,16 @@ describe('useCalc tests:', () => {
 
     it('Seleccion: numero -> +/- cambia signo', async () => {
         let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('5')
         await waitFor(() => {
@@ -306,25 +249,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Seleccion: numero -> ⌫: borra ultimo digito', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('5')
         await waitFor(() => {
@@ -354,25 +289,16 @@ describe('useCalc tests:', () => {
     });
 
     it('Resultado negativo da Error', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
-
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
         simulateSelect('5')
         await waitFor(() => {
@@ -397,25 +323,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Resultado muy grande da Error', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         for (let i = 1; i < 9; i++) {
             await waitFor(() => {
@@ -440,25 +358,17 @@ describe('useCalc tests:', () => {
         });
     });
     it('Cambiar signo en un numero muy grande da error', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         for (let i = 1; i < 9; i++) {
             await waitFor(() => {
@@ -474,25 +384,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Division da decimal formateado', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('1')
         await waitFor(() => {
@@ -517,25 +419,17 @@ describe('useCalc tests:', () => {
     });
 
     it('Division entre 0 da error', async () => {
-        let simulateSelect
-        const { getByTestId } = render(
-            <CalcProvider>
-                <CalcContext.Consumer>
-                    {({ operation, selected, displayText, setSelected }) => {
-                        // Assign setSelected to the variable when component mounts
-                        simulateSelect = setSelected;
+        let simulateSelect;
+        const { getByTestId } = renderCalculator(({ operation, displayText, setSelected }) => {
+            simulateSelect = setSelected;
+            return (
+                <div data-testid="test-component">
+                    <span data-testid="displayText">{displayText}</span>
+                    <span data-testid="operation">{operation}</span>
+                </div>
+            );
+        });
 
-                        return (
-                            <div data-testid="test-component">
-                                {/* Render displayText for testing */}
-                                <span data-testid="displayText">{displayText}</span>
-                                <span data-testid="operation">{operation}</span>
-                            </div>
-                        );
-                    }}
-                </CalcContext.Consumer>
-            </CalcProvider>
-        );
 
         simulateSelect('1')
         await waitFor(() => {
@@ -559,6 +453,3 @@ describe('useCalc tests:', () => {
         });
     });
 })
-
-
-

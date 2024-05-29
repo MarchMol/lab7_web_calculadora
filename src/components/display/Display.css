@@ -26,7 +26,7 @@
 .displayScreen {
     background: linear-gradient(30deg, rgba(36, 39, 43, 1) 47%, rgba(50, 53, 57, 1) 48%, rgba(46, 51, 56, 1) 51%, rgba(36, 39, 43, 1) 100%);
     min-height: 9vh;
-    min-width: 24vw;
+    width: auto;
     padding: 0.5vh;
     border-radius: 1vh;
     margin-bottom: 5vh;

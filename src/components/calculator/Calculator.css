@@ -10,4 +10,6 @@
     border-radius: 2vh;
     box-shadow: 0 0 3vh 0 rgba(0, 0, 0, 0.671);
     border: 0.1vh solid #222222;
+    min-width: 37vh;
+    max-width: 37vh;
 }

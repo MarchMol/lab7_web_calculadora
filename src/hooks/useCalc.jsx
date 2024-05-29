@@ -42,7 +42,7 @@ const CalcProvider = ({ children }) => {
         }
         break;
       case '=':
-        if(operation.length!=0){
+        if(operation.length!=0 && displayText.length!=0){
           let rslt = logic.calculate(
             operation.substring(0, operation.length - 1),
             operation.substring(operation.length - 1, operation.length),

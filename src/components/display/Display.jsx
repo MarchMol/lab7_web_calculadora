@@ -15,10 +15,10 @@ const Display = ({ calcOptions }) => {
     return (
         <div className="displayScreen">
             <div className="displayGrid">
-                <p className="displayOperation">
+                <p className="displayOperation" data-testid='operation'>
                     {operation!=null ? `${operation.substring(0, 10)}`: ''}
                 </p>
-                <h2 className="displayMain">
+                <h2 className="displayMain" data-testid='display'>
                     {displayText!=null ? `${displayText.substring(0, 9)}`: ''}
                 </h2>
             </div>
